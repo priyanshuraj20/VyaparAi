@@ -1,0 +1,45 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vyapar_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-vyapar}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-vyapar_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-vyapar_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-vyapar} -d ${POSTGRES_DB:-vyapar_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vyapar_api
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-vyapar}:${POSTGRES_PASSWORD:-vyapar_pass}@postgres:5432/${POSTGRES_DB:-vyapar_db}
+      SYNC_DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-vyapar}:${POSTGRES_PASSWORD:-vyapar_pass}@postgres:5432/${POSTGRES_DB:-vyapar_db}
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo 'Running Alembic migrations...' &&
+        python -m alembic upgrade head &&
+        echo 'Starting server...' &&
+        uvicorn main:app --host 0.0.0.0 --port 8000 --log-level info
+      "
+
+volumes:
+  postgres_data:
