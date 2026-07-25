@@ -4,7 +4,7 @@ from contextlib import asynccontextmanager
 import structlog
 from app.core.config import settings
 from app.core.logging import setup_logging
-from app.api import webhook, reports, ledger, customers, ocr, reminders, transactions
+from app.api import webhook, reports, ledger, customers, ocr, reminders, transactions, landing
 
 from app.services.whatsapp_service import whatsapp_service
 
@@ -42,6 +42,7 @@ app.add_middleware(
 )
 
 # ── Routes ────────────────────────────────────────────────────────────────────
+app.include_router(landing.router)
 app.include_router(webhook.router)
 app.include_router(reports.router)
 app.include_router(ledger.router)
@@ -49,18 +50,6 @@ app.include_router(customers.router)
 app.include_router(ocr.router)
 app.include_router(reminders.router)
 app.include_router(transactions.router)
-
-
-@app.get("/", tags=["System"])
-async def root():
-    return {
-        "service": "VyaparAI",
-        "description": "Agentic AI WhatsApp Business Ledger Assistant",
-        "status": "online",
-        "health": "/health",
-        "docs": "/docs",
-        "version": "1.0.0",
-    }
 
 
 @app.get("/health", tags=["System"])
