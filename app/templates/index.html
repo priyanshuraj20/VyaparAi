@@ -10,153 +10,122 @@
     document.addEventListener("DOMContentLoaded", function() {
       mermaid.initialize({
         startOnLoad: true,
-        theme: 'default',
-        themeVariables: {
-          primaryColor: '#e0f2fe',
-          primaryTextColor: '#0f172a',
-          primaryBorderColor: '#0284c7',
-          lineColor: '#64748b',
-          secondaryColor: '#f0fdf4',
-          tertiaryColor: '#f8fafc'
-        }
+        theme: 'neutral'
       });
     });
   </script>
 </head>
 <body>
 
-  <div class="container">
-    <!-- Header -->
-    <div class="header">
-      <div class="status-badge">
-        <span class="status-dot"></span> Live Production Service
-      </div>
-      
-      <div class="logo-wrapper">
-        <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 13.8262 2.49023 15.5381 3.34689 17.0125L2.14648 21.4014C2.04603 21.7694 2.15243 22.1611 2.42416 22.4237C2.69588 22.6863 3.09033 22.7801 3.45411 22.6687L7.7601 21.3508C9.18244 22.0834 10.7937 22.5 12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2 12 2ZM12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C10.9575 20 9.57143 19.6453 8.35059 18.9959L4.30078 20.2354L5.59082 15.5088C4.58284 14.1843 4 12.6568 4 12C4 7.58172 7.58172 4 12 4Z" fill="#25D366"/>
-        </svg>
-        <h1>VyaparAI</h1>
-      </div>
-
-      <p class="subtitle">
-        AI-Powered WhatsApp Business Ledger Assistant.<br>
-        Manage customer ledgers, credit entries, OCR bills, and voice notes directly via WhatsApp.
-      </p>
-
-      <div class="btn-group">
-        <a href="/docs" class="btn btn-primary">
-          🚀 Open Interactive Swagger API Docs (/docs)
-        </a>
-        <a href="/health" class="btn btn-outline">
-          🟢 Health Status (/health)
-        </a>
-        <a href="https://github.com/priyanshuraj20/VyaparAi" target="_blank" class="btn btn-outline">
-          ⭐ View GitHub Code
-        </a>
-      </div>
+  <!-- Header -->
+  <header class="header-section">
+    <div class="brand-row">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.47715 2 2 6.47715 2 12C2 13.8262 2.49023 15.5381 3.34689 17.0125L2.14648 21.4014C2.04603 21.7694 2.15243 22.1611 2.42416 22.4237C2.69588 22.6863 3.09033 22.7801 3.45411 22.6687L7.7601 21.3508C9.18244 22.0834 10.7937 22.5 12 22.5C17.5228 22.5 22 18.0228 22 12.5C22 6.97715 17.5228 2 12 2ZM12 4C16.4183 4 20 7.58172 20 12C20 16.4183 16.4183 20 12 20C10.9575 20 9.57143 19.6453 8.35059 18.9959L4.30078 20.2354L5.59082 15.5088C4.58284 14.1843 4 12.6568 4 12C4 7.58172 7.58172 4 12 4Z" fill="#25D366"/>
+      </svg>
+      <h1>VyaparAI</h1>
     </div>
 
-    <!-- System Architecture Mermaid Flow -->
-    <div class="card">
-      <h2>🏛 System Architecture & Request Lifecycle</h2>
-      <div class="mermaid-wrapper">
-        <div class="mermaid">
-        flowchart TD
-            User[WhatsApp User / Shopkeeper] -->|Text / Voice / Photo| Meta[Meta Cloud API Webhook]
-            Meta -->|JSON Payload| FastAPI[FastAPI Webhook Handler]
-            
-            subgraph Core Engine [VyaparAI Core Engine]
-                FastAPI -->|Check Message ID| Dedupe{Upstash Redis Deduplication}
-                Dedupe -->|New Message| Agentic[OpenRouter Planner Agent]
-                
-                Agentic -->|Intent & Parameters| Router{Business Tool Router}
-                
-                Router -->|Credit / Payment| Ledger[Ledger Tool & Fuzzy Match]
-                Router -->|OCR Photo| Vision[Vision LLM Extraction]
-                Router -->|Voice Note| Whisper[Whisper STT Service]
-                Router -->|Reminders| Reminder[Reminder Tool]
-                
-                Ledger -->|Permanent Record| Postgres[(Supabase PostgreSQL 16)]
-                Ledger -->|Confirmation / Undo| Redis[(Upstash Redis State)]
-            end
-            
-            Ledger -->|Structured Ledger Data| Refiner[Groq Response Refiner]
-            Refiner -->|Hinglish Response Card| Reply[Meta Cloud API Send]
-            Reply -->|WhatsApp Reply| User
-        </div>
+    <p class="subtitle">
+      WhatsApp Business Ledger Assistant. Manage customer ledgers, credit entries, OCR bills, and voice notes directly via WhatsApp.
+    </p>
+
+    <div class="nav-links">
+      <span class="badge-status"><span class="badge-dot"></span> Service Online</span>
+      <a href="/docs" class="nav-link">Interactive API Docs (/docs) &rarr;</a>
+      <a href="/health" class="nav-link">Health Check (/health) &rarr;</a>
+      <a href="https://github.com/priyanshuraj20/VyaparAi" target="_blank" class="nav-link">GitHub Repository &rarr;</a>
+    </div>
+  </header>
+
+  <!-- Architecture Flowchart -->
+  <section class="section">
+    <h2>System Architecture & Flow</h2>
+    <div class="mermaid-box">
+      <div class="mermaid">
+      flowchart TD
+          User[WhatsApp User / Shopkeeper] -->|Text / Voice / Photo| Meta[Meta Cloud API Webhook]
+          Meta -->|JSON Payload| FastAPI[FastAPI Webhook Handler]
+          
+          subgraph Core Engine [VyaparAI Core Engine]
+              FastAPI -->|Check Message ID| Dedupe{Upstash Redis Deduplication}
+              Dedupe -->|New Message| Agentic[OpenRouter Planner Agent]
+              
+              Agentic -->|Intent & Parameters| Router{Business Tool Router}
+              
+              Router -->|Credit / Payment| Ledger[Ledger Tool & Fuzzy Match]
+              Router -->|OCR Photo| Vision[Vision LLM Extraction]
+              Router -->|Voice Note| Whisper[Whisper STT Service]
+              Router -->|Reminders| Reminder[Reminder Tool]
+              
+              Ledger -->|Permanent Record| Postgres[(Supabase PostgreSQL 16)]
+              Ledger -->|Confirmation / Undo| Redis[(Upstash Redis State)]
+          end
+          
+          Ledger -->|Structured Ledger Data| Refiner[Groq Response Refiner]
+          Refiner -->|Hinglish Response Card| Reply[Meta Cloud API Send]
+          Reply -->|WhatsApp Reply| User
       </div>
     </div>
+  </section>
 
-    <!-- 2 Column Section -->
-    <div class="grid-2">
-      <!-- How to Test Endpoints -->
-      <div class="card">
-        <h2>🧪 API Endpoints for Testing</h2>
-        <ul class="list">
-          <li class="list-item">
-            <span class="code-text">GET /health</span>
-            <span class="tag">System Health Check</span>
-          </li>
-          <li class="list-item">
-            <span class="code-text">POST /webhook</span>
-            <span class="tag">WhatsApp Webhook Payload</span>
-          </li>
-          <li class="list-item">
-            <span class="code-text">GET /customers</span>
-            <span class="tag">List Ledger Customers</span>
-          </li>
-          <li class="list-item">
-            <span class="code-text">GET /reports/daily</span>
-            <span class="tag">Daily Accounting Report</span>
-          </li>
-        </ul>
-      </div>
+  <!-- API Endpoints -->
+  <section class="section">
+    <h2>API Endpoints for Testing</h2>
+    <ul class="simple-list">
+      <li class="simple-item">
+        <span class="code-font">GET /health</span>
+        <span class="tag-label">System Health Check</span>
+      </li>
+      <li class="simple-item">
+        <span class="code-font">POST /webhook</span>
+        <span class="tag-label">WhatsApp Webhook Payload Handler</span>
+      </li>
+      <li class="simple-item">
+        <span class="code-font">GET /customers</span>
+        <span class="tag-label">List Ledger Customers</span>
+      </li>
+      <li class="simple-item">
+        <span class="code-font">GET /reports/daily</span>
+        <span class="tag-label">Daily Accounting Summary</span>
+      </li>
+    </ul>
+  </section>
 
-      <!-- Example Inputs -->
-      <div class="card">
-        <h2>💬 Example Natural WhatsApp Commands</h2>
-        <ul class="list">
-          <li class="list-item">
-            <span class="code-text">"Ramesh ko 500 udhaar de do"</span>
-            <span class="tag">Credit Entry</span>
-          </li>
-          <li class="list-item">
-            <span class="code-text">"Sharma ne 300 online payment kar diya"</span>
-            <span class="tag">Payment Received</span>
-          </li>
-          <li class="list-item">
-            <span class="code-text">"Harshit ka balance kitna hai"</span>
-            <span class="tag">Balance Query</span>
-          </li>
-          <li class="list-item">
-            <span class="code-text">"undo"</span>
-            <span class="tag">Undo Transaction</span>
-          </li>
-        </ul>
-      </div>
-    </div>
+  <!-- Example WhatsApp Commands -->
+  <section class="section">
+    <h2>Example WhatsApp Messages</h2>
+    <ul class="simple-list">
+      <li class="simple-item">
+        <span class="code-font">"Ramesh ko 500 udhaar de do"</span>
+        <span class="tag-label">Credit Entry</span>
+      </li>
+      <li class="simple-item">
+        <span class="code-font">"Sharma ne 300 online payment kar diya"</span>
+        <span class="tag-label">Payment Received</span>
+      </li>
+      <li class="simple-item">
+        <span class="code-font">"Harshit ka balance kitna hai"</span>
+        <span class="tag-label">Balance Query</span>
+      </li>
+      <li class="simple-item">
+        <span class="code-font">"undo"</span>
+        <span class="tag-label">Revert Last Entry</span>
+      </li>
+    </ul>
+  </section>
 
-    <!-- Tech Stack -->
-    <div class="card">
-      <h2>⚡ Technology Stack</h2>
-      <div class="pills">
-        <span class="pill">Python 3.12</span>
-        <span class="pill">FastAPI</span>
-        <span class="pill">PostgreSQL 16 (Supabase)</span>
-        <span class="pill">Upstash Redis</span>
-        <span class="pill">OpenRouter (DeepSeek)</span>
-        <span class="pill">Groq (Llama 3.1)</span>
-        <span class="pill">OpenAI Whisper STT</span>
-        <span class="pill">Meta WhatsApp Cloud API</span>
-        <span class="pill">Docker & Render Cloud</span>
-      </div>
-    </div>
+  <!-- Technology Stack -->
+  <section class="section">
+    <h2>Technology Stack</h2>
+    <p class="tech-text">
+      Python 3.12 &bull; FastAPI &bull; PostgreSQL 16 (Supabase) &bull; Upstash Redis &bull; OpenRouter (DeepSeek) &bull; Groq (Llama 3.1) &bull; OpenAI Whisper STT &bull; Meta WhatsApp Cloud API &bull; Docker &bull; Render Cloud Platform
+    </p>
+  </section>
 
-    <footer>
-      VyaparAI Business Engine • Developed by <a href="https://github.com/priyanshuraj20" target="_blank">Priyanshu Raj</a>
-    </footer>
-  </div>
+  <footer>
+    VyaparAI Business Engine &bull; Developed by <a href="https://github.com/priyanshuraj20" target="_blank">Priyanshu Raj</a>
+  </footer>
 
 </body>
 </html>
