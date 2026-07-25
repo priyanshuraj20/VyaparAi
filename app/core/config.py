@@ -72,7 +72,19 @@ class Settings(BaseSettings):
         return cleaned
 
     @model_validator(mode="after")
-    def validate_production_secrets(self) -> "Settings":
+    def derive_sync_db_url_and_validate(self) -> "Settings":
+        # Auto-derive SYNC_DATABASE_URL from DATABASE_URL if external cloud database is used
+        if self.DATABASE_URL and ("@postgres:5432/" not in self.DATABASE_URL):
+            if not self.SYNC_DATABASE_URL or ("@postgres:5432/" in self.SYNC_DATABASE_URL):
+                sync_url = self.DATABASE_URL
+                if "postgresql+asyncpg://" in sync_url:
+                    sync_url = sync_url.replace("postgresql+asyncpg://", "postgresql+psycopg2://", 1)
+                elif "postgres://" in sync_url:
+                    sync_url = sync_url.replace("postgres://", "postgresql+psycopg2://", 1)
+                elif "postgresql://" in sync_url:
+                    sync_url = sync_url.replace("postgresql://", "postgresql+psycopg2://", 1)
+                self.SYNC_DATABASE_URL = sync_url
+
         if self.ENVIRONMENT == "production":
             missing = []
             if not self.WHATSAPP_ACCESS_TOKEN:
