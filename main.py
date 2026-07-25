@@ -30,14 +30,15 @@ app = FastAPI(
     description="Agentic AI WhatsApp Business Ledger Assistant",
     version="1.0.0",
     docs_url="/docs",
-    redoc_url=None,
+    redoc_url="/redoc",
+    openapi_url="/openapi.json",
     lifespan=lifespan,
 )
 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
