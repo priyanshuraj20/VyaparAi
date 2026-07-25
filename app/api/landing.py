@@ -12,6 +12,25 @@ LANDING_HTML = """<!DOCTYPE html>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: 'dark',
+        themeVariables: {
+          darkMode: true,
+          background: '#0d1322',
+          primaryColor: '#8b5cf6',
+          primaryTextColor: '#ffffff',
+          primaryBorderColor: '#a7f3d0',
+          lineColor: '#38bdf8',
+          secondaryColor: '#06b6d4',
+          tertiaryColor: '#10b981'
+        }
+      });
+    });
+  </script>
   <style>
     :root {
       --bg: #090d16;
@@ -46,7 +65,7 @@ LANDING_HTML = """<!DOCTYPE html>
     }
 
     .container {
-      max-width: 900px;
+      max-width: 960px;
       width: 100%;
     }
 
@@ -115,7 +134,7 @@ LANDING_HTML = """<!DOCTYPE html>
     p.subtitle {
       font-size: 1.125rem;
       color: var(--text-muted);
-      max-width: 650px;
+      max-width: 680px;
       margin: 0 auto 2rem auto;
       line-height: 1.6;
     }
@@ -165,7 +184,7 @@ LANDING_HTML = """<!DOCTYPE html>
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 1.5rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     .card {
@@ -174,6 +193,7 @@ LANDING_HTML = """<!DOCTYPE html>
       border: 1px solid var(--card-border);
       border-radius: 20px;
       padding: 1.75rem;
+      margin-bottom: 1.5rem;
     }
 
     .card h3 {
@@ -183,6 +203,13 @@ LANDING_HTML = """<!DOCTYPE html>
       display: flex;
       align-items: center;
       gap: 0.5rem;
+    }
+
+    .mermaid-container {
+      display: flex;
+      justify-content: center;
+      padding: 1rem 0;
+      overflow-x: auto;
     }
 
     .cmd-list {
@@ -269,6 +296,37 @@ LANDING_HTML = """<!DOCTYPE html>
       </div>
     </div>
 
+    <!-- Detailed Mermaid System Architecture Flow -->
+    <div class="card">
+      <h3>🏛 Comprehensive System Architecture & Lifecycle</h3>
+      <div class="mermaid-container">
+        <div class="mermaid">
+        flowchart TD
+            User[WhatsApp User / Shopkeeper] -->|Sends Text / Voice / Photo| Meta[Meta Cloud API Webhook]
+            Meta -->|JSON Webhook Payload| FastAPI[FastAPI Webhook Handler]
+            
+            subgraph Core Engine [VyaparAI Core Engine]
+                FastAPI -->|Extract Message ID| Dedupe{Upstash Redis Deduplication}
+                Dedupe -->|New Message| Agentic[OpenRouter Agentic AI Planner]
+                
+                Agentic -->|Intent & Parameters| Router{Business Tool Router}
+                
+                Router -->|Credit / Payment| Ledger[Ledger Tool & Fuzzy Resolution]
+                Router -->|OCR Photo| Vision[Vision LLM Extraction]
+                Router -->|Voice Note| Whisper[Whisper STT Service]
+                Router -->|Reminders| Reminder[Reminder Tool]
+                
+                Ledger -->|Save Permanent Record| Postgres[(Supabase PostgreSQL 16)]
+                Ledger -->|Temporary Confirmation / Undo| Redis[(Upstash Redis State)]
+            end
+            
+            Ledger -->|Structured Ledger Card| Refiner[Groq Llama 3.1 Response Refiner]
+            Refiner -->|Polished Hinglish Response| Reply[Meta Cloud API Send]
+            Reply -->|WhatsApp Reply| User
+        </div>
+      </div>
+    </div>
+
     <div class="grid-2">
       <div class="card">
         <h3>🧪 How to Test API Endpoints</h3>
@@ -321,7 +379,7 @@ LANDING_HTML = """<!DOCTYPE html>
       </div>
     </div>
 
-    <div class="card" style="margin-bottom: 2rem;">
+    <div class="card">
       <h3>⚡ System Architecture & Technology Stack</h3>
       <div class="tech-stack">
         <span class="tech-pill">Python 3.12</span>
