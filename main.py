@@ -27,9 +27,9 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="VyaparAI API",
-    description="AI Business Manager for Kirana Stores — WhatsApp native",
+    description="Agentic AI WhatsApp Business Ledger Assistant",
     version="1.0.0",
-    docs_url="/docs" if settings.ENVIRONMENT != "production" else None,
+    docs_url="/docs",
     redoc_url=None,
     lifespan=lifespan,
 )
@@ -49,6 +49,18 @@ app.include_router(customers.router)
 app.include_router(ocr.router)
 app.include_router(reminders.router)
 app.include_router(transactions.router)
+
+
+@app.get("/", tags=["System"])
+async def root():
+    return {
+        "service": "VyaparAI",
+        "description": "Agentic AI WhatsApp Business Ledger Assistant",
+        "status": "online",
+        "health": "/health",
+        "docs": "/docs",
+        "version": "1.0.0",
+    }
 
 
 @app.get("/health", tags=["System"])
