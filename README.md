@@ -2,15 +2,16 @@
 
 # 🌐 VyaparAI
 
-### AI-Powered WhatsApp Business Ledger Assistant
+### Production-Grade Agentic AI WhatsApp Business Ledger Assistant
 
 <p align="center">
-Manage your entire business ledger directly from WhatsApp using Natural Language, AI Planning, OCR, and Voice Notes.
+Manage your entire business ledger directly from WhatsApp using Agentic AI Planning, Natural Language, OCR, and Voice Notes.
 </p>
 
 <p align="center">
 
 [![Live Demo](https://img.shields.io/badge/Render-Live_Production-brightgreen?style=for-the-badge&logo=render)](https://vyaparai-jge7.onrender.com)
+![Agentic AI](https://img.shields.io/badge/Agentic_AI-Multi--Step_Planner-purple?style=for-the-badge)
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Production-green?style=for-the-badge&logo=fastapi)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue?style=for-the-badge&logo=postgresql)
@@ -31,17 +32,17 @@ Manage your entire business ledger directly from WhatsApp using Natural Language
 
 Small business owners already use WhatsApp.
 
-VyaparAI turns WhatsApp into an intelligent business assistant capable of understanding natural language, maintaining customer ledgers, recording payments, processing handwritten bills, understanding voice notes, creating payment reminders, and managing business state automatically.
+VyaparAI turns WhatsApp into an **Agentic AI Business Assistant** capable of understanding natural language, maintaining customer ledgers, recording payments, processing handwritten bills, understanding voice notes, creating payment reminders, and managing business state automatically.
 
 </div>
 
 ---
 
-# 🌟 Why VyaparAI?
+# 🌟 Why VyaparAI Agentic AI?
 
 Traditional accounting software requires users to open an app, search customers, fill forms, and save entries manually.
 
-VyaparAI removes all friction. The shop owner simply sends a WhatsApp message:
+VyaparAI removes all friction using **Agentic AI Workflow Reasoning**. The shop owner simply sends a WhatsApp message:
 
 ```text
 Ramesh ko 500 udhaar de do
@@ -71,8 +72,8 @@ VyaparAI understands intent, executes business workflows safely, persists record
 - Live Outstanding Balance Computation (No cached balance drift).
 - Duplicate Customer Detection & Auto Customer Creation Workflow.
 
-## 🤖 AI Planner & Reasoning Engine
-- Analyzes incoming text, voice notes, or photos using LLM function calling.
+## 🤖 Agentic AI Planner & Reasoning Engine
+- Powered by Agentic AI tool-calling loops that analyze incoming text, voice notes, or photos.
 - Dynamically extracts customer name, transaction amount, payment mode (`Online`, `Cash`, `UPI`), and action intent.
 
 ## 📸 OCR Bill & Invoice Processing
@@ -98,7 +99,7 @@ flowchart LR
 A[User] --> B[WhatsApp]
 B --> C[Meta Cloud API]
 C --> D[FastAPI Backend]
-D --> E[OpenRouter Planner]
+D --> E[OpenRouter Agentic Planner]
 E --> F[Business Services]
 F --> G[(PostgreSQL)]
 F --> H[(Upstash Redis)]
@@ -117,7 +118,7 @@ flowchart TD
 A[User] --> B[WhatsApp]
 B --> C[Meta Cloud API]
 C --> D[FastAPI Backend]
-D --> E[Planner Agent]
+D --> E[Agentic Planner Agent]
 E --> F[Business Services]
 F --> G[(PostgreSQL)]
 F --> H[(Upstash Redis)]
@@ -127,7 +128,7 @@ I --> J[WhatsApp Reply]
 
 ---
 
-# 🧩 AI Request Lifecycle
+# 🧩 Agentic AI Request Lifecycle
 
 ```mermaid
 sequenceDiagram
@@ -135,7 +136,7 @@ sequenceDiagram
 participant U as User
 participant W as WhatsApp
 participant API as FastAPI
-participant P as Planner
+participant P as Agentic Planner
 participant S as Service Layer
 participant DB as PostgreSQL
 participant R as Redis
@@ -179,7 +180,7 @@ W-->>U: Response
 # ⚙ Tech Stack
 
 - **Backend**: Python 3.12, FastAPI, AsyncPG, SQLAlchemy, Alembic
-- **AI Providers**: OpenRouter (DeepSeek Chat / GPT-4o-mini), Groq (Llama 3.1), Whisper STT
+- **AI Providers**: Agentic AI via OpenRouter (DeepSeek Chat / GPT-4o-mini), Groq (Llama 3.1), Whisper STT
 - **Database & Memory**: PostgreSQL 16 (Source of Truth), Upstash Redis (Temporary State & Idempotency)
 - **Deployment**: Docker, Docker Compose, Render Cloud Platform
 
@@ -190,7 +191,7 @@ W-->>U: Response
 ```text
 VyaparAI
 ├── app
-│   ├── agents          # OpenRouter Planner & Reasoning Agent
+│   ├── agents          # Agentic AI Planner & Reasoning Agent
 │   ├── api             # FastAPI Webhook & REST Endpoints
 │   ├── core            # Settings, Logging & Database Config
 │   ├── db              # SQLAlchemy Models & Async Sessions
