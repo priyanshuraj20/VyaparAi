@@ -1,15 +1,16 @@
 <div align="center">
 
-#  VyaparAI
+# 🌐 VyaparAI
 
 ### AI-Powered WhatsApp Business Ledger Assistant
 
 <p align="center">
-Manage your entire business ledger directly from WhatsApp using Natural Language, AI Planning, OCR and Voice.
+Manage your entire business ledger directly from WhatsApp using Natural Language, AI Planning, OCR, and Voice Notes.
 </p>
 
 <p align="center">
 
+[![Live Demo](https://img.shields.io/badge/Render-Live_Production-brightgreen?style=for-the-badge&logo=render)](https://vyaparai-jge7.onrender.com)
 ![Python](https://img.shields.io/badge/Python-3.12-blue?style=for-the-badge&logo=python)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Production-green?style=for-the-badge&logo=fastapi)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-blue?style=for-the-badge&logo=postgresql)
@@ -21,13 +22,16 @@ Manage your entire business ledger directly from WhatsApp using Natural Language
 
 </p>
 
+### 🔗 Live Production API URL
+`https://vyaparai-jge7.onrender.com`
+
 ---
 
 ### 📱 Talk to your Business. Don't open another App.
 
 Small business owners already use WhatsApp.
 
-VyaparAI turns WhatsApp into an intelligent business assistant capable of understanding natural language, maintaining customer ledgers, recording payments, processing bills, understanding voice notes, creating reminders and much more.
+VyaparAI turns WhatsApp into an intelligent business assistant capable of understanding natural language, maintaining customer ledgers, recording payments, processing handwritten bills, understanding voice notes, creating payment reminders, and managing business state automatically.
 
 </div>
 
@@ -35,170 +39,54 @@ VyaparAI turns WhatsApp into an intelligent business assistant capable of unders
 
 # 🌟 Why VyaparAI?
 
-Traditional accounting software requires users to:
+Traditional accounting software requires users to open an app, search customers, fill forms, and save entries manually.
 
-- Open an application
-- Search customers
-- Fill forms
-- Save entries
-- Generate reports
+VyaparAI removes all friction. The shop owner simply sends a WhatsApp message:
 
-VyaparAI removes all of that.
-
-The shop owner simply sends a WhatsApp message.
-
-```
+```text
 Ramesh ko 500 udhaar de do
 
-Sharma ne 300 payment kar diya
+Sharma ne 300 payment kar diya online
 
-Kal subah 9 baje yaad dila dena
+Kal subah 9 baje reminder bhej do
 
 Ye bill scan kar do
 
 Is voice note ko record kar lo
 ```
 
-VyaparAI understands the request, executes the correct business workflow, stores permanent records safely, and replies with a clean conversational response.
+VyaparAI understands intent, executes business workflows safely, persists records in PostgreSQL, and replies with structured accounting software cards.
 
 ---
 
 # ✨ Core Features
 
 ## 💬 Natural Language Business Assistant
-
-Understand Hindi, English and Hinglish business conversations.
-
-Examples
-
-```
-Ramesh ko 500 de do
-
-Gupta ne paise de diye
-
-Harshit ka balance kitna hai
-
-Kal reminder laga dena
-
-Is bill ko save kar do
-```
-
----
+- Understands Hindi, English, and Hinglish business conversations seamlessly.
+- Handles casual greetings and assistant introduction prompts warm & conversationally.
 
 ## 📒 Smart Customer Ledger
+- Customer Management & Fuzzy Name Resolution.
+- Credit Entries (`credit_given`) & Payment Entries (`payment_received`).
+- Live Outstanding Balance Computation (No cached balance drift).
+- Duplicate Customer Detection & Auto Customer Creation Workflow.
 
-- Customer Management
-- Credit Entries
-- Payment Entries
-- Outstanding Balance
-- Customer Search
-- Duplicate Customer Resolution
-- Customer Auto Creation
+## 🤖 AI Planner & Reasoning Engine
+- Analyzes incoming text, voice notes, or photos using LLM function calling.
+- Dynamically extracts customer name, transaction amount, payment mode (`Online`, `Cash`, `UPI`), and action intent.
 
----
-
-## 🤖 AI Planner
-
-Instead of hardcoded if-else blocks, every message is analyzed by an LLM.
-
-The planner understands
-
-- Intent
-- Customer
-- Amount
-- Transaction Type
-- Reminder
-- OCR
-- Voice Commands
-
-and routes the request to the correct business service.
-
----
-
-
-## 📸 OCR Bill Processing
-
-Upload
-
-- Bills
-- Receipts
-- Invoices
-
-VyaparAI extracts information and converts it into structured business records.
-
----
+## 📸 OCR Bill & Invoice Processing
+- Vision LLM extracts line items, amounts, and customer details directly from handwritten bill or receipt photos.
 
 ## 🎤 Voice Note Understanding
+- Transcribes incoming audio using OpenAI Whisper API and routes natural voice commands directly into the ledger workflow.
 
-Users can send WhatsApp voice messages.
+## ⏪ Reversal & Undo Transaction
+- Reverses the most recent transaction instantly upon receiving `"undo"`.
 
-Pipeline
-
-```
-Voice
-
-↓
-
-Speech To Text
-
-↓
-
-Planner
-
-↓
-
-Business Tool
-
-↓
-
-Response
-```
-
----
-
-## ⏪ Undo Transaction
-
-Accidental transaction?
-
-Simply reply
-
-```
-undo
-```
-
-The latest transaction is reversed safely.
-
----
-
-## ⏳ Pending Confirmation
-
-If a customer doesn't exist
-
-```
-Customer not found.
-
-Create Customer?
-
-YES / NO
-```
-
-The original request resumes automatically after confirmation.
-
----
-
-## ⚡ Upstash Redis
-
-Redis stores only temporary conversational state.
-
-Examples
-
-- Pending Confirmation
-- Undo State
-- Customer Selection
-- Duplicate Webhook Protection
-- Conversation TTL
-
-Permanent records remain inside PostgreSQL.
+## ⏳ Temporary Pending Confirmation (Upstash Redis)
+- If a customer is missing or candidate match is ambiguous, temporary state is stored in Redis.
+- Upon confirmation (`YES`/`NO`), original transaction context is retrieved and replayed seamlessly.
 
 ---
 
@@ -226,134 +114,20 @@ J --> A
 ```mermaid
 flowchart TD
 
-A[User]
---> B[WhatsApp]
-
+A[User] --> B[WhatsApp]
 B --> C[Meta Cloud API]
-
 C --> D[FastAPI Backend]
-
 D --> E[Planner Agent]
-
 E --> F[Business Services]
-
 F --> G[(PostgreSQL)]
-
 F --> H[(Upstash Redis)]
-
 F --> I[Groq Response Refiner]
-
 I --> J[WhatsApp Reply]
 ```
 
-# ⚙ Tech Stack
-
-## Backend
-
-- Python 3.12
-- FastAPI
-- SQLAlchemy
-- AsyncPG
-- Alembic
-
 ---
-
-## AI
-
-- OpenRouter
-- DeepSeek Chat
-- Groq Llama 3.1
-
----
-
-## Database
-
-- PostgreSQL
-- Upstash Redis
-
----
-
-## Infrastructure
-
-- Docker
-- Docker Compose
-
----
-
-## APIs
-
-- WhatsApp Cloud API
-- OpenRouter API
-- Groq API
-
----
-
-# 📂 Project Structure
-
-```text
-VyaparAI
-
-├── app
-│   ├── agents
-│   ├── api
-│   ├── core
-│   ├── database
-│   ├── models
-│   ├── prompts
-│   ├── repositories
-│   ├── routers
-│   ├── schemas
-│   ├── services
-│   ├── state
-│   ├── utils
-│   └── main.py
-│
-├── alembic
-├── docker
-├── tests
-├── requirements.txt
-├── docker-compose.yml
-└── README.md
-```
-
----
-
-# 📸 Screenshots
-
-## 1. WhatsApp Conversation Assistant
-
-![WhatsApp Conversation](docs/images/01-whatsapp-chat.png)
-
----
-
-## 2. Docker Container & Live Logs
-
-![Docker Desktop Containers](docs/images/02-docker-containers.png)
-
----
-
-# ⭐ Highlights
-
-- Production-ready FastAPI architecture
-- AI-powered natural language planner
-- WhatsApp Cloud API integration
-- OCR document understanding
-- Voice note processing
-- PostgreSQL as source of truth
-- Upstash Redis for conversation state
-- Dockerized deployment
-- Structured logging
-- Layered architecture
-- AI Response Refiner
-- Production error handling
-- Scalable service-based design
-
----
-
 
 # 🧩 AI Request Lifecycle
-
-Every request follows the exact same lifecycle regardless of whether it is a payment, reminder, OCR request or voice note.
 
 ```mermaid
 sequenceDiagram
@@ -368,170 +142,99 @@ participant R as Redis
 participant F as Response Refiner
 
 U->>W: Send Message
-
 W->>API: Webhook
-
 API->>P: Analyze User Intent
-
 P->>S: Execute Business Tool
-
 S->>DB: Read/Write Business Data
-
 S->>R: Store Temporary State (Optional)
-
 DB-->>S: Result
-
 S->>F: Structured Response
-
 F-->>API: Human Friendly Reply
-
 API-->>W: Send Message
-
 W-->>U: Response
 ```
 
+---
 
+# 📸 Screenshots & Live Deployment
 
-# ⚡ Upstash Redis
+## 1. WhatsApp Conversation Assistant
 
-Redis stores only temporary conversation state.
-
-Permanent business records remain inside PostgreSQL.
-
-Redis stores
-
-- Pending Confirmation
-- Undo State
-- Duplicate Webhook IDs
-- Customer Selection
-- Conversation TTL
+![WhatsApp Conversation](docs/images/01-whatsapp-chat.png)
 
 ---
 
+## 2. Live Render Cloud Production Deployment
 
-# 💾 Why PostgreSQL?
-
-PostgreSQL stores all permanent business information.
-
-Examples
-
-- Customers
-- Transactions
-- Outstanding Balances
-- Reminders
-- Reports
-
-Permanent data never goes to Redis.
+![Render Production Live Deployment](docs/images/03-render-live.png)
 
 ---
 
-# ⚡ Why Upstash Redis?
+## 3. Docker Container & Environment Setup
 
-Redis stores only temporary conversation state.
-
-| Data | TTL |
-|------|-----|
-| Pending Confirmation | 30 min |
-| Customer Selection | 10 min |
-| Undo Reference | 5 min |
-| Processed WhatsApp Message IDs | 24 hr |
-
-Redis is never used as the source of truth.
+![Docker Desktop Containers](docs/images/02-docker-containers.png)
 
 ---
 
-# 🔒 Security
+# ⚙ Tech Stack
 
-VyaparAI follows multiple production security practices.
+- **Backend**: Python 3.12, FastAPI, AsyncPG, SQLAlchemy, Alembic
+- **AI Providers**: OpenRouter (DeepSeek Chat / GPT-4o-mini), Groq (Llama 3.1), Whisper STT
+- **Database & Memory**: PostgreSQL 16 (Source of Truth), Upstash Redis (Temporary State & Idempotency)
+- **Deployment**: Docker, Docker Compose, Render Cloud Platform
 
-## Environment Variables
+---
 
-Sensitive credentials are never committed.
+# 📂 Project Structure
 
-```env
-OPENROUTER_API_KEY=
-
-GROQ_API_KEY=
-
-DATABASE_URL=
-
-UPSTASH_REDIS_REST_URL=
-
-UPSTASH_REDIS_REST_TOKEN=
-
-WHATSAPP_VERIFY_TOKEN=
-
-WHATSAPP_ACCESS_TOKEN=
+```text
+VyaparAI
+├── app
+│   ├── agents          # OpenRouter Planner & Reasoning Agent
+│   ├── api             # FastAPI Webhook & REST Endpoints
+│   ├── core            # Settings, Logging & Database Config
+│   ├── db              # SQLAlchemy Models & Async Sessions
+│   ├── memory          # Session Store & Upstash Redis Store
+│   ├── prompts         # Domain-Aware Accounting Card Prompts
+│   ├── services        # WhatsApp, Refiner, Whisper & Vision Services
+│   └── tools           # Customer, Ledger, Report & Reminder Tools
+├── alembic             # Database Migrations
+├── docs/images         # Screenshots
+├── tests               # Automated Pytest Suite
+├── Dockerfile          # Render Compatible Production Dockerfile
+├── docker-compose.yml  # Local Container Setup
+├── render.yaml         # Render Blueprint Specification
+└── README.md
 ```
 
 ---
 
+# 💾 PostgreSQL & Upstash Redis Split
 
-# 🐳 Docker Deployment
+| Storage Layer | Data Stored | TTL |
+|---------------|-------------|-----|
+| **PostgreSQL** | Permanent Customers, Transactions, Ledgers, Reports, Reminders | Permanent |
+| **Upstash Redis** | Pending Confirmation State, Candidates, Undo Reference, Message Deduplication | 5 min - 24 hr |
 
-Start all services
+---
 
-```bash
-docker compose up --build
-```
-
-Run in background
-
-```bash
-docker compose up -d
-```
-
-Stop
+# 🚀 Quick Start (Local Development)
 
 ```bash
-docker compose down
+# 1. Clone Repository
+git clone https://github.com/priyanshuraj20/VyaparAi.git
+cd VyaparAi
+
+# 2. Start Services via Docker Compose
+docker compose up -d --build
+
+# 3. Test Health Endpoint
+curl http://localhost:8000/health
 ```
 
 ---
 
-# 🚀 Local Development
-
-Clone
-
-```bash
-git clone https://github.com/<username>/VyaparAI.git
-```
-
-Install
-
-```bash
-pip install -r requirements.txt
-```
-
-Run
-
-```bash
-uvicorn app.main:app --reload
-```
-
----
-
-# 🌐 Environment Variables
-
-```env
-DATABASE_URL=
-
-OPENROUTER_API_KEY=
-
-GROQ_API_KEY=
-
-UPSTASH_REDIS_REST_URL=
-
-UPSTASH_REDIS_REST_TOKEN=
-
-WHATSAPP_PHONE_NUMBER_ID=
-
-WHATSAPP_ACCESS_TOKEN=
-
-WHATSAPP_VERIFY_TOKEN=
-```
-
-## 📄 License & Credits
+# 📄 License & Credits
 
 This project is licensed under the **MIT License**.
 
