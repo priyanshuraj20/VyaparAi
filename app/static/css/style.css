@@ -21,7 +21,7 @@ body {
   color: var(--text-main);
   line-height: 1.6;
   padding: 3rem 1.5rem;
-  max-width: 760px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -40,12 +40,13 @@ body {
 }
 
 .brand-icon {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: -0.02em;
@@ -57,23 +58,44 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-/* Links & Buttons */
+/* Links & Buttons — Crisp Square Corners (0px border-radius) */
 .nav-links {
   display: flex;
-  gap: 1.25rem;
+  gap: 1rem;
   flex-wrap: wrap;
   align-items: center;
 }
 
-.nav-link {
-  color: var(--link-blue);
-  text-decoration: none;
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1rem;
+  border-radius: 0px; /* Sharp clean human corners */
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
 }
 
-.nav-link:hover {
-  text-decoration: underline;
+.btn-green {
+  background-color: var(--wa-green);
+  color: #ffffff;
+  border: 1px solid var(--wa-dark);
+}
+
+.btn-green:hover {
+  background-color: var(--wa-dark);
+}
+
+.btn-outline {
+  background-color: #ffffff;
+  color: var(--text-main);
+  border: 1px solid #cbd5e1;
+}
+
+.btn-outline:hover {
+  background-color: #f8fafc;
 }
 
 .badge-status {
@@ -86,8 +108,8 @@ h1 {
 }
 
 .badge-dot {
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   background-color: var(--wa-green);
   border-radius: 50%;
 }
@@ -123,7 +145,7 @@ p {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.6rem 0;
+  padding: 0.65rem 0;
   border-bottom: 1px solid #f3f4f6;
   font-size: 0.9rem;
 }
@@ -145,9 +167,21 @@ p {
   line-height: 1.8;
 }
 
+/* Mermaid Container Overrides — Pure White Background (No Yellow) */
 .mermaid-box {
   padding: 1rem 0;
   overflow-x: auto;
+  background: #ffffff !important;
+}
+
+.mermaid .cluster rect {
+  fill: #ffffff !important;
+  stroke: #cbd5e1 !important;
+}
+
+.mermaid .node rect, .mermaid .node circle, .mermaid .node polygon {
+  fill: #f8fafc !important;
+  stroke: #94a3b8 !important;
 }
 
 footer {
