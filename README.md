@@ -115,37 +115,6 @@ and routes the request to the correct business service.
 
 ---
 
-## 🧠 AI Response Refiner
-
-Business logic produces structured responses.
-
-A lightweight LLM converts them into natural WhatsApp replies.
-
-Example
-
-Instead of
-
-```
-SUCCESS
-
-Amount = ₹500
-```
-
-User receives
-
-```
-✅ ₹500 payment recorded.
-
-Current Balance
-
-₹1,200
-```
-
-The refiner never changes business data.
-
-It only improves language.
-
----
 
 ## 📸 OCR Bill Processing
 
@@ -248,6 +217,8 @@ F --> H[(Upstash Redis)]
 F --> I[Groq Response Refiner]
 I --> J[WhatsApp Reply]
 J --> A
+```
+
 ---
 
 # 🏛 Production Architecture
@@ -256,49 +227,24 @@ J --> A
 flowchart TD
 
 A[User]
+--> B[WhatsApp]
 
-B[WhatsApp]
+B --> C[Meta Cloud API]
 
-C[Meta Cloud API]
+C --> D[FastAPI Backend]
 
-D[FastAPI]
+D --> E[Planner Agent]
 
-E[Planner]
+E --> F[Business Services]
 
-F[Business Services]
+F --> G[(PostgreSQL)]
 
-G[(PostgreSQL)]
+F --> H[(Upstash Redis)]
 
-H[(Upstash Redis)]
+F --> I[Groq Response Refiner]
 
-I[Groq Refiner]
-
-J[WhatsApp API]
-
-A --> B
-
-B --> C
-
-C --> D
-
-D --> E
-
-E --> F
-
-F --> G
-
-F --> H
-
-F --> I
-
-I --> J
-
-J --> B
-
-B --> A
+I --> J[WhatsApp Reply]
 ```
-
----
 
 # ⚙ Tech Stack
 
@@ -383,15 +329,6 @@ VyaparAI
 ## 2. Docker Container & Live Logs
 
 ![Docker Desktop Containers](docs/images/02-docker-containers.png)
-
----
-
-
-# 🚀 Demo
-
-Coming Soon
-
-GIF Demo will be added here.
 
 ---
 
@@ -594,179 +531,8 @@ WHATSAPP_ACCESS_TOKEN=
 WHATSAPP_VERIFY_TOKEN=
 ```
 
----
+## 📄 License & Credits
 
-# 📸 Recommended Screenshots
+This project is licensed under the **MIT License**.
 
-Take screenshots of the following
-
-## 1. WhatsApp Conversation
-
-```
-Customer Creation
-
-Credit
-
-Payment
-
-Undo
-
-Reminder
-```
-
----
-
-## 2. Docker
-
-```
-docker ps
-```
-
----
-
-## 3. PostgreSQL
-
-Show
-
-```
-customers
-
-transactions
-
-reminders
-```
-
----
-
-## 4. Upstash
-
-Show
-
-```
-Redis Dashboard
-
-Keys
-
-TTL
-```
-
----
-
-## 5. OpenRouter
-
-Planner Request
-
-Planner Response
-
----
-
-## 6. Groq
-
-Response Refinement
-
----
-
-## 7. Health Endpoint
-
-```
-GET /health
-```
-
----
-
-## 8. Logs
-
-Show
-
-```
-planner_request
-
-customer_created
-
-transaction_created
-
-whatsapp_send
-```
-
----
-
-## 9. Architecture Diagram
-
-Export Mermaid as PNG.
-
----
-
-# 🎥 Demo Video
-
-A 2–3 minute demo should cover
-
-1. Project Introduction
-
-2. WhatsApp Credit Entry
-
-3. Customer Auto Creation
-
-4. Payment Recording
-
-5. OCR Receipt Upload
-
-6. Voice Note Processing
-
-7. Reminder Creation
-
-8. Undo Transaction
-
-9. Redis Pending Confirmation
-
-10. Dockerized Deployment
-
----
-
-# 📌 Design Principles
-
-The project follows
-
-- Separation of Concerns
-- Single Responsibility Principle
-- Stateless API Design
-- Layered Architecture
-- AI Planning + Deterministic Execution
-- Source of Truth Database
-- Temporary Conversation State
-- Human-readable AI Responses
-
----
-
-# 🎯 Why This Architecture?
-
-The architecture intentionally separates reasoning from execution.
-
-| Layer | Responsibility |
-|--------|----------------|
-| Planner | Understand intent |
-| Service Layer | Execute business logic |
-| PostgreSQL | Store permanent data |
-| Redis | Store temporary state |
-| Response Refiner | Improve language |
-
-This separation makes the system easier to test, scale and maintain.
-
----
-
-# ⭐ Production Highlights
-
-- AI-powered Natural Language Understanding
-- WhatsApp Cloud API Integration
-- OpenRouter Planner Agent
-- Groq Response Refinement
-- PostgreSQL Source of Truth
-- Upstash Redis Conversation State
-- OCR Receipt Processing
-- Voice Note Understanding
-- Undo Workflow
-- Pending Confirmation Workflow
-- Duplicate Webhook Protection
-- Dockerized Deployment
-- Layered Architecture
-- Production Logging
-- Modular Service Design
+Developed with ❤️ by **Priyanshu Raj**.
