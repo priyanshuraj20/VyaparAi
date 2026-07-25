@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     WHATSAPP_VERIFY_TOKEN: str = "vyapar_ai_secret_verify_token"
     WHATSAPP_APP_SECRET: str = ""
 
-    # Database
+    # Database (Supports local Postgres, Supabase, Neon, Railway & Render)
     DATABASE_URL: str = "postgresql+asyncpg://vyapar:vyapar_pass@postgres:5432/vyapar_db"
     SYNC_DATABASE_URL: str = "postgresql+psycopg2://vyapar:vyapar_pass@postgres:5432/vyapar_db"
 
@@ -38,6 +38,28 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore"
     )
+
+    @field_validator("DATABASE_URL", mode="before")
+    @classmethod
+    def normalize_database_url(cls, v: str) -> str:
+        if not v:
+            return v
+        if v.startswith("postgres://"):
+            return v.replace("postgres://", "postgresql+asyncpg://", 1)
+        if v.startswith("postgresql://") and "+asyncpg" not in v:
+            return v.replace("postgresql://", "postgresql+asyncpg://", 1)
+        return v
+
+    @field_validator("SYNC_DATABASE_URL", mode="before")
+    @classmethod
+    def normalize_sync_database_url(cls, v: str) -> str:
+        if not v:
+            return v
+        if v.startswith("postgres://"):
+            return v.replace("postgres://", "postgresql+psycopg2://", 1)
+        if v.startswith("postgresql://") and "+psycopg2" not in v:
+            return v.replace("postgresql://", "postgresql+psycopg2://", 1)
+        return v
 
     @field_validator("OWNER_PHONE_NUMBER", mode="before")
     @classmethod
